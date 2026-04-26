@@ -1,18 +1,48 @@
-**Cocolytics** is an advanced AI-powered Coconut disease detection and environmental monitoring application developed by **chanuja**. It leverages Deep Learning to help farmers and plant enthusiasts identify coconut-related diseases from simple leaf scans and provides actionable treatment plans.
+# 🌴 Cocolytics
 
-## 🚀 Key Features
-- **Instant Disease Detection**: Uses AI to identify plant illnesses from a single photo.
-- **Severity Assessment**: Categorizes the intensity of the disease (Low, Medium, High).
-- **Comprehensive Database**: Provides symptoms, scientific names, and botanical details.
-- **Interactive Maps**: Localized monitoring of disease outbreaks across districts.
-- **Community Forum**: Connect with other growers and share insights.
-- **Support System**: Direct WhatsApp integration for expert assistance.
+> **An advanced AI-powered Coconut disease detection and environmental monitoring application.**
+
+**Cocolytics** leverages Deep Learning to help farmers, agronomists, and plant enthusiasts identify coconut-related diseases from simple leaf scans. By bridging the gap between artificial intelligence and agriculture, Cocolytics provides instant diagnostics, actionable treatment plans, and localized monitoring to ensure crop health and yield optimization.
+
+---
+
+##  Features
+
+* **Instant Disease Detection:** Utilize custom AI models to identify plant illnesses from a single uploaded or captured photo.
+* **Severity Assessment:** Automatically categorizes the intensity of the detected disease (Low, Medium, High) to prioritize treatment.
+* **Comprehensive Database:** Access detailed botanical information, scientific names, and typical symptoms of various coconut diseases.
+* **Interactive Maps:** Monitor disease outbreaks and environmental trends localized across different districts.
+* **Community Forum:** Connect with other growers, share agricultural insights, and ask questions.
+* **Direct Support System:** Built-in WhatsApp integration for immediate expert assistance and consultation.
+
+---
+
+## 🛠️ Tech Stack
+
+**Frontend**
+* [Flutter](https://flutter.dev/) - Multi-platform UI framework
+* **Provider** - State management
+
+**Backend & Cloud**
+* [Firebase](https://firebase.google.com/) - Authentication, Firestore (Database), and Cloud Storage
+
+**Artificial Intelligence**
+* **FastAPI** - High-performance backend serving custom Deep Learning models
+* **Gemini API** - (Integrated via secrets for advanced data processing/generation)
+
+---
 
 ## 📂 Project Structure
-- `lib/screens`: UI implementation (Camera, Home, Forum, etc.)
-- `lib/providers`: State management using the Provider package.
-- `lib/services`: Integration with Firebase, Cloudinary, and FastAPI AI models.
-- `lib/models`: Data structures for scans, users, and forum posts.
+
+```text
+lib/
+├── models/       # Data structures for scans, users, and forum posts
+├── providers/    # State management logic and view models
+├── screens/      # UI implementation (Camera, Home, Forum, Maps, etc.)
+├── services/     # API integrations (Firebase, Cloudinary, FastAPI)
+├── utils/        # Helper functions, constants, and secret configurations
+└── main.dart     # Application entry point 
+```
 
 ## 🛠️ Built With
 - **Framework**: Flutter (Multi-platform)
