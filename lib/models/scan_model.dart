@@ -6,14 +6,14 @@ class ScanModel {
   final String botanicalName;
   final String scientificName;
   final double confidence;
-  final String severity;
+  final String severity; // 'low', 'medium', 'high'
   final String description;
   final List<String> symptoms;
   final String district;
   final double? latitude;
   final double? longitude;
   final DateTime timestamp;
-  final bool isSynced;
+  final bool isSynced; // false = saved offline, not yet on Firebase
 
   ScanModel({
     required this.id,
@@ -72,7 +72,6 @@ class ScanModel {
       'isSynced': isSynced,
     };
   }
-
 
   ScanModel copyWith({bool? isSynced, String? imageUrl}) {
     return ScanModel(

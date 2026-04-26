@@ -51,7 +51,6 @@ class DBHelper {
   Future<void> insertScan(ScanModel scan) async {
     final db = await database;
     final map = scan.toMap();
-    // store symptoms as json string in sqlite
     map['symptoms'] = jsonEncode(scan.symptoms);
     map['isSynced'] = scan.isSynced ? 1 : 0;
     

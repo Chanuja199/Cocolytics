@@ -50,10 +50,8 @@ class ForumProvider extends ChangeNotifier {
         imageUrl: imageUrl,
       );
 
-      // Add to top of list
       _posts.insert(0, post);
 
-      // Trigger AI auto-reply in background
       _forumService.generateAiReply(postId: post.id, content: content).then((
         updatedPost,
       ) {

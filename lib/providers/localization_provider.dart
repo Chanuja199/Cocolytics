@@ -112,7 +112,6 @@ class LocalizationProvider extends ChangeNotifier {
       'no_cases_yet': 'No cases yet',
       'no_affected_districts': 'No affected districts',
       'all_clear': 'All clear',
-      // Treatments - Bud Rot
       'Immediately remove and destroy the infected bud tissues.': 'Immediately remove and destroy the infected bud tissues.',
       'Apply Bordeaux mixture or copper oxychloride paste to the cut surface.': 'Apply Bordeaux mixture or copper oxychloride paste to the cut surface.',
       'Provide good drainage to reduce humidity around the palm.': 'Provide good drainage to reduce humidity around the palm.',
@@ -123,7 +122,6 @@ class LocalizationProvider extends ChangeNotifier {
       'Regularly inspect neighboring palms for early detection.': 'Regularly inspect neighboring palms for early detection.',
       'Ensure proper plant spacing for air circulation.': 'Ensure proper plant spacing for air circulation.',
       'Avoid physical damage to the palm bud during harvesting.': 'Avoid physical damage to the palm bud during harvesting.',
-      // Lethal Yellowing
       'Quarantine the affected area immediately.': 'Quarantine the affected area immediately.',
       'Fell and burn actively infected palms to prevent insect vector spread.': 'Fell and burn actively infected palms to prevent insect vector spread.',
       'Oxytetracycline HCl': 'Oxytetracycline HCl',
@@ -131,7 +129,6 @@ class LocalizationProvider extends ChangeNotifier {
       'Certified agricultural antibiotic distributors': 'Certified agricultural antibiotic distributors',
       'Replant with resistant or highly tolerant coconut varieties (e.g., Malayan Dwarf).': 'Replant with resistant or highly tolerant coconut varieties (e.g., Malayan Dwarf).',
       'Control populations of the planthopper vector.': 'Control populations of the planthopper vector.',
-      // Root Wilt
       'Cut and remove severely diseased palms showing yellowing and flaccidity.': 'Cut and remove severely diseased palms showing yellowing and flaccidity.',
       'Apply organic manure (50 kg) mixed with bio-fertilizers per palm.': 'Apply organic manure (50 kg) mixed with bio-fertilizers per palm.',
       'NPK + Magnesium': 'NPK + Magnesium',
@@ -140,7 +137,6 @@ class LocalizationProvider extends ChangeNotifier {
       'Cultivate intercrops to improve soil health and microbial activity.': 'Cultivate intercrops to improve soil health and microbial activity.',
       'Irrigate properly during summer months.': 'Irrigate properly during summer months.',
       'Use disease-resistant seedlings for gap filling.': 'Use disease-resistant seedlings for gap filling.',
-      // Leaf Spot
       'Cut and burn the severely infected lower leaves.': 'Cut and burn the severely infected lower leaves.',
       'Improve field sanitation by removing weeds.': 'Improve field sanitation by removing weeds.',
       'Mancozeb or Copper Oxychloride': 'Mancozeb or Copper Oxychloride',
@@ -239,7 +235,6 @@ class LocalizationProvider extends ChangeNotifier {
       'no_cases_yet': 'තවමත් රෝගීන් නොමැත',
       'no_affected_districts': 'බලපෑමට ලක් වූ දිස්ත්‍රික්ක නොමැත',
       'all_clear': 'අවදානමක් නොමැත',
-      // Treatments - Bud Rot
       'Immediately remove and destroy the infected bud tissues.': 'ආසාදිත ගොබ කොටස් වහාම ඉවත් කර විනාශ කරන්න.',
       'Apply Bordeaux mixture or copper oxychloride paste to the cut surface.': 'කැපූ පෘෂ්ඨයට බෝඩෝ මිශ්‍රණය හෝ කොපර් ඔක්සික්ලෝරයිඩ් තලපයක් ආලේප කරන්න.',
       'Provide good drainage to reduce humidity around the palm.': 'ගස අවට ආර්ද්‍රතාවය අඩු කිරීම සඳහා හොඳ ජලවහන පද්ධතියක් සාදන්න.',
@@ -250,7 +245,6 @@ class LocalizationProvider extends ChangeNotifier {
       'Regularly inspect neighboring palms for early detection.': 'කලින් හඳුනා ගැනීම සඳහා අවට ගස් නිතිපතා පරීක්ෂා කරන්න.',
       'Ensure proper plant spacing for air circulation.': 'වාතාශ්‍රය ලැබීම සඳහා ගස් අතර නිසි පරතරය සහතික කරන්න.',
       'Avoid physical damage to the palm bud during harvesting.': 'අස්වනු නෙලීමේදී ගොබයට භෞතික හානි වීමෙන් වළකින්න.',
-      // Lethal Yellowing
       'Quarantine the affected area immediately.': 'බලපෑමට ලක් වූ ප්‍රදේශය වහාම නිරෝධායනය කරන්න.',
       'Fell and burn actively infected palms to prevent insect vector spread.': 'කෘමීන් පැතිරීම වැළැක්වීම සඳහා ආසාදිත ගස් කපා පුළුස්සා දමන්න.',
       'Oxytetracycline HCl': 'ඔක්සිටෙට්‍රාසයික්ලින් HCl',
@@ -258,7 +252,6 @@ class LocalizationProvider extends ChangeNotifier {
       'Certified agricultural antibiotic distributors': 'සහතික කළ කෘෂිකාර්මික ප්‍රතිජීවක බෙදාහරින්නන්',
       'Replant with resistant or highly tolerant coconut varieties (e.g., Malayan Dwarf).': 'රෝගවලට ඔරොත්තු දෙන පොල් ප්‍රභේද (උදා: මැලේසියානු කුරු) නැවත වගා කරන්න.',
       'Control populations of the planthopper vector.': 'රෝග බෝ කරන කෘමි ගහනය පාලනය කරන්න.',
-      // Root Wilt
       'Cut and remove severely diseased palms showing yellowing and flaccidity.': 'කහ වී දුර්වල වූ තදබල ලෙස රෝගී වූ ගස් කපා ඉවත් කරන්න.',
       'Apply organic manure (50 kg) mixed with bio-fertilizers per palm.': 'එක් ගසකට කාබනික පොහොර කිලෝ 50ක් ජීව පොහොර සමඟ මිශ්‍ර කර යොදන්න.',
       'NPK + Magnesium': 'NPK + මැග්නීසියම්',
@@ -267,7 +260,6 @@ class LocalizationProvider extends ChangeNotifier {
       'Cultivate intercrops to improve soil health and microbial activity.': 'පසෙහි සෞඛ්‍යය හා ක්ෂුද්‍රජීවී ක්‍රියාකාරිත්වය වැඩි දියුණු කිරීම සඳහා අතුරු භෝග වගා කරන්න.',
       'Irrigate properly during summer months.': 'වියළි කාලවලදී නිසි ලෙස ජල සම්පාදනය කරන්න.',
       'Use disease-resistant seedlings for gap filling.': 'හිඩැස් පිරවීම සඳහා රෝග වලට ඔරොත්තු දෙන පැළ භාවිතා කරන්න.',
-      // Leaf Spot
       'Cut and burn the severely infected lower leaves.': 'තදබල ලෙස ආසාදිත පහළ කොළ කපා පුළුස්සා දමන්න.',
       'Improve field sanitation by removing weeds.': 'වල් පැල ඉවත් කිරීම මගින් ක්ෂේත්‍රයේ සනීපාරක්ෂාව වැඩි දියුණු කරන්න.',
       'Mancozeb or Copper Oxychloride': 'මැන්කොසෙබ් (Mancozeb) හෝ කොපර් ඔක්සික්ලෝරයිඩ්',

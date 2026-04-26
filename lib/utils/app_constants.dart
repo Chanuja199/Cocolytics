@@ -1,7 +1,5 @@
-import 'package:flutter_dotenv/flutter_dotenv.dart';
-
 class AppConstants {
-  static String get aiBaseUrl => dotenv.get('AI_BASE_URL', fallback: 'http://localhost:8000');
+  static const String aiBaseUrl = 'http://10.252.208.239:8000';
   static const String predictEndpoint = '/predict';
 
   static const String whatsappNumber = '0740629020';

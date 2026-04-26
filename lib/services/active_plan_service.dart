@@ -8,7 +8,6 @@ class ActivePlanService {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
   final _uuid = const Uuid();
 
-  // Create a new plan from a scan result + treatment data
   Future<ActivePlanModel> createPlan({
     required String userId,
     required ScanModel scan,
@@ -16,7 +15,6 @@ class ActivePlanService {
   }) async {
     final id = _uuid.v4();
 
-    // Convert treatment steps into trackable PlanSteps
     final List<PlanStep> steps = [];
 
     for (final step in treatment.shortTermSteps) {
@@ -63,7 +61,6 @@ class ActivePlanService {
       createdAt: DateTime.now(),
     );
 
-    // Save to Firestore under user's document
     await _db
         .collection('users')
         .doc(userId)
@@ -74,7 +71,6 @@ class ActivePlanService {
     return plan;
   }
 
-  // Get the user's current active plan (most recent)
   Future<ActivePlanModel?> getActivePlan(String userId) async {
     final snapshot = await _db
         .collection('users')
@@ -88,7 +84,6 @@ class ActivePlanService {
     return ActivePlanModel.fromMap(snapshot.docs.first.data());
   }
 
-  // Toggle a step as done/undone
   Future<ActivePlanModel> toggleStep({
     required String userId,
     required ActivePlanModel plan,
@@ -119,7 +114,6 @@ class ActivePlanService {
     return updatedPlan;
   }
 
-  // Delete the current active plan
   Future<void> deletePlan({
     required String userId,
     required String planId,
@@ -132,7 +126,6 @@ class ActivePlanService {
         .delete();
   }
 
-  // Get the most spreading disease in a district from all users' scans
   Future<Map<String, dynamic>?> getMostSpreadingDisease(String district) async {
     try {
       final snapshot = await _db.collection('districts').doc(district).get();

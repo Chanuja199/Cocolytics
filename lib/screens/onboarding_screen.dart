@@ -10,11 +10,9 @@ class OnboardingScreen extends StatelessWidget {
       backgroundColor: const Color(0xFFF5FCED),
       body: Stack(
         children: [
-          // Background Image
           Positioned.fill(
             child: Image.asset('assets/coconut-tree.png', fit: BoxFit.cover),
           ),
-          // Gradient Overlay
           Positioned.fill(
             child: Container(
               decoration: BoxDecoration(
@@ -31,7 +29,6 @@ class OnboardingScreen extends StatelessWidget {
               ),
             ),
           ),
-          // Onboarding Content
           SafeArea(
             child: Align(
               alignment: Alignment.bottomCenter,
@@ -42,7 +39,6 @@ class OnboardingScreen extends StatelessWidget {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      // Logo/Brand Icon
                       Container(
                         width: 80,
                         height: 80,
@@ -61,7 +57,7 @@ class OnboardingScreen extends StatelessWidget {
                         alignment: Alignment.center,
                         child: ClipOval(
                           child: Image.asset(
-                            'assets/icon.jpeg',
+                            'assets/icon.png',
                             width: 48,
                             height: 48,
                             fit: BoxFit.cover,
@@ -69,7 +65,6 @@ class OnboardingScreen extends StatelessWidget {
                         ),
                       ),
 
-                      // Greeting Text
                       const Text(
                         'Welcome to Cocolytic',
                         textAlign: TextAlign.center,
@@ -96,7 +91,6 @@ class OnboardingScreen extends StatelessWidget {
                       ),
                       const SizedBox(height: 16),
 
-                      // Value Proposition
                       const Padding(
                         padding: EdgeInsets.symmetric(horizontal: 16),
                         child: Text(
@@ -113,7 +107,6 @@ class OnboardingScreen extends StatelessWidget {
                       ),
                       const SizedBox(height: 32),
 
-                      // Call to Action
                       Container(
                         width: double.infinity,
                         height: 56,

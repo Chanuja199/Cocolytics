@@ -37,6 +37,16 @@ class _HistoryScreenState extends State<HistoryScreen> {
         title: Text(loc.translate('history')),
         backgroundColor: Colors.white,
         elevation: 0.5,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            if (context.canPop()) {
+              context.pop();
+            } else {
+              context.go('/home');
+            }
+          },
+        ),
       ),
       body: history.isEmpty
           ? Center(

@@ -52,5 +52,26 @@ class NotificationService {
       await doc.reference.update({'isRead': true});
     }
   }
+
+  Future<void> deleteNotification(String userId, String notificationId) async {
+    await _db
+        .collection('users')
+        .doc(userId)
+        .collection('notifications')
+        .doc(notificationId)
+        .delete();
+  }
+
+  Future<void> clearAllNotifications(String userId) async {
+    final snapshot = await _db
+        .collection('users')
+        .doc(userId)
+        .collection('notifications')
+        .get();
+
+    for (final doc in snapshot.docs) {
+      await doc.reference.delete();
+    }
+  }
 }
 

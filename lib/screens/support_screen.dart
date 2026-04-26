@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../providers/localization_provider.dart';
 import '../utils/app_colors.dart';
 
-// ── Data model ───────────────────────────────────────────────────────────────
 
 class _AgriCenter {
   final String name;
@@ -27,7 +24,6 @@ class _AgriCenter {
 }
 
 const List<_AgriCenter> _centers = [
-  // ── Department of Agriculture – Main & Regional Centers ──
   _AgriCenter(
     name: 'Dept. of Agriculture – Head Office',
     type: 'Head Office',
@@ -97,7 +93,6 @@ const List<_AgriCenter> _centers = [
     lng: 81.0000,
   ),
 
-  // ── Specialty Research Institutes ──
   _AgriCenter(
     name: 'Tea Research Institute of Sri Lanka',
     type: 'Research Institute',
@@ -146,7 +141,6 @@ const List<_AgriCenter> _centers = [
     lng: 80.6231,
   ),
 
-  // ── Provincial / District Agriculture Offices ──
   _AgriCenter(
     name: 'Provincial Dept. of Agriculture – Western Province',
     type: 'Provincial Office',
@@ -221,7 +215,6 @@ const List<_AgriCenter> _centers = [
   ),
 ];
 
-// ── Color map for center types ───────────────────────────────────────────────
 
 Color _typeColor(String type) {
   switch (type) {
@@ -242,7 +235,6 @@ Color _typeColor(String type) {
   }
 }
 
-// ── Screen ───────────────────────────────────────────────────────────────────
 
 class SupportScreen extends StatefulWidget {
   const SupportScreen({super.key});
@@ -311,202 +303,284 @@ class _SupportScreenState extends State<SupportScreen> {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    final filtered = _filtered;
-    final loc = context.watch<LocalizationProvider>();
-
-    return Scaffold(
-      backgroundColor: AppColors.background,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0.5,
-        title: Row(
-          children: [
-            Container(
-              width: 28,
-              height: 28,
-              decoration: BoxDecoration(
-                color: const Color.fromARGB(255, 255, 255, 255),
-                borderRadius: BorderRadius.circular(6),
+  Widget _buildSupportCard({
+    required IconData icon,
+    required String title,
+    required String subtitle,
+    required Color iconColor,
+    required Color bgColor,
+    required Color textColor,
+    required Color subtitleColor,
+    required VoidCallback onTap,
+    bool isPrimary = false,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 12),
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+        decoration: BoxDecoration(
+          color: bgColor,
+          borderRadius: BorderRadius.circular(32),
+          boxShadow: [
+            if (!isPrimary)
+              BoxShadow(
+                color: Colors.black.withOpacity(0.04),
+                blurRadius: 12,
+                offset: const Offset(0, 4),
               ),
-              child: Padding(
-                padding: const EdgeInsets.all(4.0),
-                child: Image.asset('assets/cocolytic-logo.png'),
+          ],
+        ),
+        child: Row(
+          children: [
+            Icon(icon, color: iconColor, size: 28),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: TextStyle(
+                      fontFamily: 'Plus Jakarta Sans',
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: textColor,
+                    ),
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    subtitle,
+                    style: TextStyle(
+                      fontFamily: 'Manrope',
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
+                      color: subtitleColor,
+                    ),
+                  ),
+                ],
               ),
             ),
-            const SizedBox(width: 8),
-            Text(
-              context.watch<LocalizationProvider>().translate('support'),
-              style: const TextStyle(
-                color: AppColors.textPrimary,
-                fontWeight: FontWeight.bold,
+            Container(
+              padding: const EdgeInsets.all(4),
+              decoration: BoxDecoration(
+                color: isPrimary ? Colors.white : const Color(0xFF006527),
+                shape: BoxShape.circle,
+              ),
+              child: Icon(
+                Icons.chevron_right,
+                color: isPrimary ? const Color(0xFF006527) : Colors.white,
+                size: 20,
               ),
             ),
           ],
         ),
       ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final filtered = _filtered;
+
+    return Scaffold(
+      backgroundColor: const Color(0xFFF5FCED),
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(kToolbarHeight + 10),
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    Image.asset(
+                      'assets/icon.png',
+                      width: 24,
+                      height: 24,
+                      fit: BoxFit.contain,
+                    ),
+                    const SizedBox(width: 10),
+                    const Text(
+                      'Cocolytics',
+                      style: TextStyle(
+                        fontFamily: 'Plus Jakarta Sans',
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF006527),
+                        letterSpacing: -0.5,
+                      ),
+                    ),
+                  ],
+                ),
+                const Icon(
+                  Icons.help_outline,
+                  color: Color(0xFF006527),
+                  size: 24,
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              loc.translate('how_can_we_help'),
-              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 16),
-
-            // ── Search bar ───────────────────────────────────────────────
-            TextField(
-              onChanged: (v) => setState(() => _searchQuery = v),
-              decoration: InputDecoration(
-                hintText: loc.translate('search_topics'),
-                prefixIcon: const Icon(Icons.search),
-                filled: true,
-                fillColor: Colors.white,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: BorderSide.none,
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(30),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.04),
+                    blurRadius: 10,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
+              ),
+              child: TextField(
+                onChanged: (v) => setState(() => _searchQuery = v),
+                style: const TextStyle(
+                  fontFamily: 'Manrope',
+                  fontSize: 15,
+                  color: Color(0xFF171D14),
+                ),
+                decoration: InputDecoration(
+                  hintText: 'Search topics, FAQs, experts...',
+                  hintStyle: const TextStyle(
+                    fontFamily: 'Manrope',
+                    color: Color(0xFF8A9792),
+                  ),
+                  prefixIcon: const Padding(
+                    padding: EdgeInsets.only(left: 12.0, right: 8.0),
+                    child: Icon(Icons.search, color: Color(0xFF006527)),
+                  ),
+                  filled: true,
+                  fillColor: Colors.transparent,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30),
+                    borderSide: BorderSide.none,
+                  ),
+                  contentPadding: const EdgeInsets.symmetric(vertical: 18),
                 ),
               ),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 32),
 
-            // ── Support option cards ─────────────────────────────────────
-            ...[
-              (
-                Icons.account_balance,
-                Colors.orange,
-                loc.translate('government_hotline'),
-                loc.translate('contact_state_agri'),
-                '/hotlines',
-              ),
-              (
-                Icons.psychology,
-                Colors.blue,
-                loc.translate('expert_consultation'),
-                loc.translate('chat_with_pathologists'),
-                '/hotlines',
-              ),
-              (
-                Icons.headset_mic,
-                Colors.purple,
-                loc.translate('technical_support'),
-                loc.translate('app_issues'),
-                '/hotlines',
-              ),
-            ].map(
-              (item) => GestureDetector(
-                onTap: () => context.push(item.$5),
-                child: Container(
-                  margin: const EdgeInsets.only(bottom: 12),
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Row(
+            _buildSupportCard(
+              icon: Icons.phone_in_talk_outlined,
+              title: 'Government Hotline',
+              subtitle: 'රාජ්‍ය ක්ෂණික ඇමතුම',
+              iconColor: const Color(0xFF006527),
+              bgColor: Colors.white,
+              textColor: const Color(0xFF171D14),
+              subtitleColor: const Color(0xFF5F6F68),
+              onTap: () => context.push('/hotlines'),
+            ),
+            _buildSupportCard(
+              icon: Icons.psychology_outlined,
+              title: 'Expert Consultation',
+              subtitle: 'විශේෂඥ උපදෙස්',
+              iconColor: Colors.white,
+              bgColor: const Color(0xFF1B7A38), // dark green
+              textColor: Colors.white,
+              subtitleColor: Colors.white.withOpacity(0.8),
+              isPrimary: true,
+              onTap: () => context.push('/hotlines'),
+            ),
+            _buildSupportCard(
+              icon: Icons.settings_outlined,
+              title: 'Technical Support',
+              subtitle: 'තාක්ෂණික සහාය',
+              iconColor: const Color(0xFF006527),
+              bgColor: Colors.white,
+              textColor: const Color(0xFF171D14),
+              subtitleColor: const Color(0xFF5F6F68),
+              onTap: () => context.push('/hotlines'),
+            ),
+
+            const SizedBox(height: 32),
+
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                const Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Container(
-                        padding: const EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                          color: item.$2.withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Icon(item.$1, color: item.$2),
-                      ),
-                      const SizedBox(width: 14),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              item.$3,
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            Text(
-                              item.$4,
-                              style: const TextStyle(
-                                color: AppColors.textSecondary,
-                                fontSize: 12,
-                              ),
-                            ),
-                          ],
+                      Text(
+                        'Agricultural Centers',
+                        style: TextStyle(
+                          fontFamily: 'Plus Jakarta Sans',
+                          fontSize: 22,
+                          fontWeight: FontWeight.w800,
+                          color: Color(0xFF171D14),
+                          letterSpacing: -0.5,
                         ),
                       ),
-                      const Icon(
-                        Icons.chevron_right,
-                        color: AppColors.textSecondary,
+                      Text(
+                        'කෘෂිකාර්මික මධ්‍යස්ථාන',
+                        style: TextStyle(
+                          fontFamily: 'Manrope',
+                          fontSize: 14,
+                          color: Color(0xFF5F6F68),
+                        ),
                       ),
                     ],
                   ),
                 ),
-              ),
-            ),
-
-            const SizedBox(height: 8),
-
-            // ── Agricultural Centers section ─────────────────────────────
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  loc.translate('agricultural_centers'),
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                Text(
-                  '${filtered.length} ${loc.translate('agri_centers_count')}',
-                  style: const TextStyle(
-                    fontSize: 12,
-                    color: AppColors.textSecondary,
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 2),
+                  child: Text(
+                    '${filtered.length} centers available',
+                    style: const TextStyle(
+                      fontFamily: 'Plus Jakarta Sans',
+                      fontSize: 13,
+                      fontWeight: FontWeight.w700,
+                      color: Color(0xFF006527),
+                    ),
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: 16),
 
-            // ── Type filter chips ────────────────────────────────────────
             SizedBox(
-              height: 34,
+              height: 40,
               child: ListView.separated(
                 scrollDirection: Axis.horizontal,
                 itemCount: _getTypes().length,
+                clipBehavior: Clip.none,
                 separatorBuilder: (_, __) => const SizedBox(width: 8),
                 itemBuilder: (_, i) {
                   final t = _getTypes()[i];
                   final selected = _selectedType == t;
-                  final displayLabel = t == 'All' ? loc.translate('all') : t;
                   return GestureDetector(
                     onTap: () => setState(() => _selectedType = t),
                     child: AnimatedContainer(
-                      duration: const Duration(milliseconds: 180),
+                      duration: const Duration(milliseconds: 200),
                       padding: const EdgeInsets.symmetric(
-                        horizontal: 14,
-                        vertical: 6,
+                        horizontal: 20,
+                        vertical: 10,
                       ),
                       decoration: BoxDecoration(
-                        color: selected ? AppColors.primary : Colors.white,
+                        color: selected
+                            ? const Color(0xFFA4F48A) // Active Green
+                            : const Color(0xFFE4EBDD), // Inactive Grey
                         borderRadius: BorderRadius.circular(20),
-                        border: Border.all(
-                          color: selected
-                              ? AppColors.primary
-                              : Colors.grey.shade300,
-                        ),
                       ),
                       child: Text(
-                        displayLabel,
+                        t,
                         style: TextStyle(
-                          fontSize: 12,
+                          fontFamily: 'Plus Jakarta Sans',
+                          fontSize: 13,
                           fontWeight: FontWeight.w600,
                           color: selected
-                              ? Colors.white
-                              : AppColors.textSecondary,
+                              ? const Color(0xFF171D14)
+                              : const Color(0xFF3F4A3E),
                         ),
                       ),
                     ),
@@ -515,20 +589,22 @@ class _SupportScreenState extends State<SupportScreen> {
               ),
             ),
 
-            const SizedBox(height: 12),
+            const SizedBox(height: 24),
 
-            // ── Center cards ─────────────────────────────────────────────
             if (filtered.isEmpty)
               Container(
                 padding: const EdgeInsets.all(24),
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(24),
                 ),
                 child: const Center(
                   child: Text(
                     'No centers match your search.',
-                    style: TextStyle(color: AppColors.textSecondary),
+                    style: TextStyle(
+                      fontFamily: 'Manrope',
+                      color: Color(0xFF5F6F68),
+                    ),
                   ),
                 ),
               )
@@ -541,98 +617,68 @@ class _SupportScreenState extends State<SupportScreen> {
                 ),
               ),
 
-            const SizedBox(height: 20),
+            const SizedBox(height: 16),
 
-            // ── Legend ───────────────────────────────────────────────────
             Container(
-              padding: const EdgeInsets.all(14),
+              width: double.infinity,
+              padding: const EdgeInsets.all(28),
               decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(12),
+                color: const Color(0xFFD6F6CC), // banner green
+                borderRadius: BorderRadius.circular(36),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
-                    'Legend',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
+                    'Join the Farming\nCommunity',
+                    style: TextStyle(
+                      fontFamily: 'Plus Jakarta Sans',
+                      fontSize: 22,
+                      fontWeight: FontWeight.w800,
+                      color: Color(0xFF185121),
+                      height: 1.2,
+                    ),
                   ),
-                  const SizedBox(height: 8),
-                  Wrap(
-                    spacing: 12,
-                    runSpacing: 6,
-                    children: _getTypes()
-                        .where((t) => t != 'All')
-                        .map(
-                          (t) => Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Container(
-                                width: 10,
-                                height: 10,
-                                decoration: BoxDecoration(
-                                  color: _typeColor(t),
-                                  shape: BoxShape.circle,
-                                ),
-                              ),
-                              const SizedBox(width: 5),
-                              Text(t, style: const TextStyle(fontSize: 11)),
-                            ],
-                          ),
-                        )
-                        .toList(),
+                  const SizedBox(height: 12),
+                  const Text(
+                    'Get real-time updates and\nexpert tips from other coconut\nfarmers.',
+                    style: TextStyle(
+                      fontFamily: 'Manrope',
+                      fontSize: 14,
+                      color: Color(0xFF4C7D51),
+                      fontWeight: FontWeight.w500,
+                      height: 1.4,
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+                  ElevatedButton(
+                    onPressed: () {}, // Community routing logic could go here
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF006527),
+                      foregroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 24,
+                        vertical: 14,
+                      ),
+                      shadowColor: Colors.transparent,
+                    ),
+                    child: const Text(
+                      'Join Community',
+                      style: TextStyle(
+                        fontFamily: 'Plus Jakarta Sans',
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14,
+                      ),
+                    ),
                   ),
                 ],
               ),
             ),
 
-            const SizedBox(height: 20),
-
-            // ── FAQ section ──────────────────────────────────────────────
-            const Text(
-              'Common Questions',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 12),
-
-            ...[
-              (
-                'How accurate is the disease detection?',
-                'Our AI-powered detection system can identify common plant diseases with high accuracy when the image is clear and well lit. For best results, scan the affected leaf in natural light and keep the camera steady.',
-              ),
-              (
-                'Is my farm data shared with others?',
-                'No. Your farm data is kept private and is not shared with other users or third parties without your permission. We use secure storage methods to protect your information.',
-              ),
-              (
-                'What if the scanner doesn\'t recognize a spot?',
-                'If the scanner cannot recognize a spot, try taking another photo from a closer angle with better lighting. If the issue continues, you can use Expert Consultation or Technical Support for further help.',
-              ),
-            ].map(
-              (item) => Container(
-                margin: const EdgeInsets.only(bottom: 8),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: ExpansionTile(
-                  title: Text(item.$1, style: const TextStyle(fontSize: 14)),
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Text(
-                        item.$2,
-                        style: const TextStyle(
-                          fontSize: 13,
-                          color: Colors.black87,
-                          height: 1.5,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
+            const SizedBox(height: 60), // Spacing for bottom nav
           ],
         ),
       ),
@@ -640,7 +686,6 @@ class _SupportScreenState extends State<SupportScreen> {
   }
 }
 
-// ── Center list card ─────────────────────────────────────────────────────────
 
 class _CenterCard extends StatelessWidget {
   final _AgriCenter center;
@@ -655,30 +700,36 @@ class _CenterCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = _typeColor(center.type);
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        margin: const EdgeInsets.only(bottom: 10),
-        padding: const EdgeInsets.all(14),
+        margin: const EdgeInsets.only(bottom: 16),
+        padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(12),
-          border: Border(left: BorderSide(color: color, width: 4)),
+          borderRadius: BorderRadius.circular(28),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.03),
+              blurRadius: 10,
+              offset: const Offset(0, 4),
+            ),
+          ],
         ),
         child: Row(
           children: [
-            // Type badge dot
             Container(
-              width: 40,
-              height: 40,
-              decoration: BoxDecoration(
-                color: color.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(10),
+              width: 56,
+              height: 56,
+              decoration: const BoxDecoration(
+                shape: BoxShape.circle,
+                image: DecorationImage(
+                  image: AssetImage('assets/icon.png'), // Fallback
+                  fit: BoxFit.cover,
+                ),
               ),
-              child: Icon(Icons.agriculture, color: color, size: 20),
             ),
-            const SizedBox(width: 12),
+            const SizedBox(width: 16),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -686,47 +737,44 @@ class _CenterCard extends StatelessWidget {
                   Text(
                     center.name,
                     style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 13,
+                      fontFamily: 'Plus Jakarta Sans',
+                      fontWeight: FontWeight.w700,
+                      fontSize: 15,
+                      color: Color(0xFF171D14),
+                      height: 1.2,
                     ),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  const SizedBox(height: 3),
-                  Row(
-                    children: [
-                      Icon(Icons.location_on, size: 12, color: color),
-                      const SizedBox(width: 3),
-                      Text(
-                        center.district,
-                        style: TextStyle(fontSize: 11, color: color),
-                      ),
-                      const SizedBox(width: 8),
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 6,
-                          vertical: 1,
-                        ),
-                        decoration: BoxDecoration(
-                          color: color.withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                        child: Text(
-                          center.type,
-                          style: TextStyle(fontSize: 10, color: color),
-                        ),
-                      ),
-                    ],
+                  const SizedBox(height: 4),
+                  Text(
+                    '${center.district}${center.type != center.district ? ', ${center.district}' : ''}',
+                    style: const TextStyle(
+                      fontFamily: 'Manrope',
+                      fontSize: 13,
+                      color: Color(0xFF5F6F68),
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ],
               ),
             ),
-            // Open in maps icon
-            IconButton(
-              icon: const Icon(Icons.map_outlined, color: AppColors.primary),
-              onPressed: onMaps,
-              tooltip: 'Open in Maps',
-              iconSize: 20,
+            const SizedBox(width: 12),
+            GestureDetector(
+              onTap: onMaps,
+              child: Container(
+                padding: const EdgeInsets.all(12),
+                decoration: const BoxDecoration(
+                  color: Color(0xFFEAF5E5),
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(
+                  Icons.map_outlined,
+                  color: Color(0xFF006527),
+                  size: 20,
+                ),
+              ),
             ),
           ],
         ),
@@ -735,7 +783,6 @@ class _CenterCard extends StatelessWidget {
   }
 }
 
-// ── Bottom sheet detail ──────────────────────────────────────────────────────
 
 class _CenterDetailSheet extends StatelessWidget {
   final _AgriCenter center;
@@ -757,7 +804,6 @@ class _CenterDetailSheet extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Handle
           Center(
             child: Container(
               width: 40,
@@ -770,7 +816,6 @@ class _CenterDetailSheet extends StatelessWidget {
           ),
           const SizedBox(height: 20),
 
-          // Type badge
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
             decoration: BoxDecoration(
@@ -833,7 +878,6 @@ class _CenterDetailSheet extends StatelessWidget {
 
           const SizedBox(height: 24),
 
-          // Action buttons
           Row(
             children: [
               Expanded(

@@ -56,7 +56,6 @@ class _CameraScreenState extends State<CameraScreen> with WidgetsBindingObserver
     try {
       _cameras = await availableCameras();
       if (_cameras.isNotEmpty) {
-        // Try to find back camera first
         _selectedCameraIndex = _cameras.indexWhere((c) => c.lensDirection == CameraLensDirection.back);
         if (_selectedCameraIndex == -1) _selectedCameraIndex = 0;
         await _setCamera(_cameras[_selectedCameraIndex]);
@@ -72,9 +71,8 @@ class _CameraScreenState extends State<CameraScreen> with WidgetsBindingObserver
     }
     _controller = CameraController(
       cameraDescription,
-      ResolutionPreset.high,
+      ResolutionPreset.medium,
       enableAudio: false,
-      imageFormatGroup: Platform.isAndroid ? ImageFormatGroup.yuv420 : ImageFormatGroup.bgra8888,
     );
     try {
       await _controller!.initialize();
@@ -246,7 +244,6 @@ class _CameraScreenState extends State<CameraScreen> with WidgetsBindingObserver
 
     return Stack(
       children: [
-        // Camera Preview Background
         Positioned.fill(
           child: isCameraReady
               ? AspectRatio(
@@ -256,7 +253,6 @@ class _CameraScreenState extends State<CameraScreen> with WidgetsBindingObserver
               : Container(color: Colors.black),
         ),
 
-        // Dark Overlay Header
         Positioned(
           top: 0,
           left: 0,
@@ -288,7 +284,6 @@ class _CameraScreenState extends State<CameraScreen> with WidgetsBindingObserver
           ),
         ),
 
-        // Viewfinder Frame
         Center(
           child: CustomPaint(
             size: const Size(280, 280),
@@ -296,7 +291,6 @@ class _CameraScreenState extends State<CameraScreen> with WidgetsBindingObserver
           ),
         ),
 
-        // Suggestion Text
         Positioned(
           bottom: 160,
           left: 0,
@@ -316,7 +310,6 @@ class _CameraScreenState extends State<CameraScreen> with WidgetsBindingObserver
           ),
         ),
 
-        // Bottom Action Bar
         Positioned(
           bottom: 40,
           left: 0,
@@ -324,7 +317,6 @@ class _CameraScreenState extends State<CameraScreen> with WidgetsBindingObserver
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              // Gallery Button
               GestureDetector(
                 onTap: _pickFromGallery,
                 child: Container(
@@ -342,7 +334,6 @@ class _CameraScreenState extends State<CameraScreen> with WidgetsBindingObserver
                 ),
               ),
               
-              // Capture Button
               GestureDetector(
                 onTap: _takeLivePicture,
                 child: Container(
@@ -363,7 +354,6 @@ class _CameraScreenState extends State<CameraScreen> with WidgetsBindingObserver
                 ),
               ),
               
-              // Switch Camera Button
               GestureDetector(
                 onTap: _switchCamera,
                 child: Container(

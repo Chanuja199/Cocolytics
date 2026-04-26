@@ -49,11 +49,9 @@ class _SplashScreenState extends State<SplashScreen>
       backgroundColor: const Color(0xFFF5FCED), // From Tailwind bg-surface
       body: Stack(
         children: [
-          // Background Image
           Positioned.fill(
             child: Image.asset("assets/coconut-tree.png", fit: BoxFit.cover),
           ),
-          // Gradient Overlay
           Positioned.fill(
             child: Container(
               decoration: BoxDecoration(
@@ -70,7 +68,6 @@ class _SplashScreenState extends State<SplashScreen>
               ),
             ),
           ),
-          // Content
           SafeArea(
             child: Center(
               child: FadeTransition(
@@ -80,7 +77,6 @@ class _SplashScreenState extends State<SplashScreen>
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      // Logo Container
                       Container(
                         width: 140,
                         height: 140,
@@ -101,11 +97,10 @@ class _SplashScreenState extends State<SplashScreen>
                           ],
                         ),
                         child: Image.asset(
-                          "assets/icon.jpeg",
+                          "assets/icon.png",
                           fit: BoxFit.contain,
                         ),
                       ),
-                      // Title
                       const Text(
                         "Cocolytic",
                         style: TextStyle(
@@ -117,7 +112,6 @@ class _SplashScreenState extends State<SplashScreen>
                         ),
                       ),
                       const SizedBox(height: 16),
-                      // Subtitles
                       Column(
                         children: [
                           const Text(
@@ -144,7 +138,6 @@ class _SplashScreenState extends State<SplashScreen>
                         ],
                       ),
                       const SizedBox(height: 64),
-                      // Progress Bar
                       Container(
                         width: 48,
                         height: 4,

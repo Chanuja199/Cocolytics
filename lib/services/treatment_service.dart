@@ -4,8 +4,9 @@ import '../models/treatment_model.dart';
 class TreatmentService {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
+  /// Retrieves the treatment plan for a specific disease ID.
+  /// Checks local offline dictionary first for zero-network latency, then falls back to Firestore.
   Future<TreatmentModel?> getTreatment(String diseaseId) async {
-    // Attempt offline local dictionary first to ensure zero-network latency and offline support
     final offlineTreatment = _getOfflineTreatment(diseaseId);
     if (offlineTreatment != null) {
       return offlineTreatment;

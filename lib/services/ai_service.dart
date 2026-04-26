@@ -10,6 +10,7 @@ class AiService {
     'gemini-2.5-flash',
   ];
 
+  /// Provides advice from an expert agricultural assistant specializing in Coconut cultivation.
   Future<String> askCoconutAssistant({required String question}) async {
     final apiKey = Secrets.geminiApiKey;
     if (apiKey.trim().isEmpty) {
@@ -48,6 +49,7 @@ Keep it farmer-friendly and avoid complex medical terminology.''',
     }
   }
 
+  /// Drafts a short, practical AI reply for community forum posts.
   Future<String> draftForumReply({required String question}) async {
     final apiKey = Secrets.geminiApiKey;
     if (apiKey.trim().isEmpty) {
@@ -136,12 +138,10 @@ Keep the reply readable (simple English).''',
       debugPrint('Gemini API error model=$model (${response.statusCode}): $body');
       lastError = 'gemini_http_${response.statusCode}: $body';
 
-      // If model not found/supported, try next model.
       if (response.statusCode == 404) {
         continue;
       }
 
-      // Other errors should not retry with another model.
       throw Exception(lastError);
     }
 

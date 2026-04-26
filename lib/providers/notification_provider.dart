@@ -70,4 +70,22 @@ class NotificationProvider extends ChangeNotifier {
     await _service.markAllRead(userId);
     await loadNotifications(userId);
   }
+
+  Future<void> deleteNotification(String userId, String notificationId) async {
+    _notifications.removeWhere((n) => n['id'] == notificationId);
+    _unreadCount = _notifications.where((n) => n['isRead'] != true).length;
+    notifyListeners();
+    if (userId.trim().isEmpty || userId == 'temp_user_id') return;
+    await _service.deleteNotification(userId, notificationId);
+    await loadNotifications(userId);
+  }
+
+  Future<void> clearAllNotifications(String userId) async {
+    _notifications.clear();
+    _unreadCount = 0;
+    notifyListeners();
+    if (userId.trim().isEmpty || userId == 'temp_user_id') return;
+    await _service.clearAllNotifications(userId);
+    await loadNotifications(userId);
+  }
 }

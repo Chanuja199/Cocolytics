@@ -24,7 +24,6 @@ class ActivePlanProvider extends ChangeNotifier {
 
   String _planCacheKey(String userId) => 'active_plan_$userId';
 
-  // Load plan on app start
   Future<void> loadActivePlan(String userId) async {
     if (userId.trim().isEmpty || userId == 'temp_user_id') {
       _activePlan = null;
@@ -37,10 +36,8 @@ class ActivePlanProvider extends ChangeNotifier {
     notifyListeners();
 
     try {
-      // Try Firestore first
       _activePlan = await _service.getActivePlan(userId);
 
-      // If not in Firestore, check local cache
       if (_activePlan == null) {
         final cached = LocalStorageService.get(
           AppConstants.userBox,
@@ -53,7 +50,6 @@ class ActivePlanProvider extends ChangeNotifier {
 
       _state = ActivePlanState.loaded;
     } catch (e) {
-      // Fall back to local cache on error
       final cached = LocalStorageService.get(
         AppConstants.userBox,
         _planCacheKey(userId),
@@ -67,17 +63,14 @@ class ActivePlanProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  // Load district alert from Firestore
   Future<void> loadDistrictAlert(String district) async {
     try {
       _districtAlert = await _service.getMostSpreadingDisease(district);
       notifyListeners();
     } catch (e) {
-      // Silently fail — not critical
     }
   }
 
-  // Called from treatment screen — saves plan
   Future<void> createPlan({
     required String userId,
     required ScanModel scan,
@@ -93,7 +86,6 @@ class ActivePlanProvider extends ChangeNotifier {
         treatment: treatment,
       );
 
-      // Cache locally
       _cacheLocally(userId);
 
       _state = ActivePlanState.loaded;
@@ -105,7 +97,6 @@ class ActivePlanProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  // Toggle step done/undone
   Future<void> toggleStep({
     required String userId,
     required String stepId,
@@ -121,7 +112,6 @@ class ActivePlanProvider extends ChangeNotifier {
       _cacheLocally(userId);
       notifyListeners();
     } catch (e) {
-      // Toggle locally even if Firestore fails
       final updatedSteps = _activePlan!.steps.map((step) {
         if (step.id == stepId) {
           return step.copyWith(isDone: !step.isDone);
@@ -134,23 +124,19 @@ class ActivePlanProvider extends ChangeNotifier {
     }
   }
 
-  // Delete plan
   Future<void> deletePlan(String userId) async {
     if (_activePlan == null) return;
 
-    // Set loading state so UI shows spinner, not blank
     _state = ActivePlanState.loading;
     notifyListeners();
 
     try {
       await _service.deletePlan(userId: userId, planId: _activePlan!.id);
     } catch (e) {
-      // Delete locally even if Firestore fails
     }
 
     _activePlan = null;
     LocalStorageService.delete(AppConstants.userBox, _planCacheKey(userId));
-    // Legacy cleanup from old shared key.
     LocalStorageService.delete(AppConstants.userBox, 'active_plan');
     notifyListeners();
   }

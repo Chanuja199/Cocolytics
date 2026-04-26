@@ -22,11 +22,9 @@ class AuthProvider extends ChangeNotifier {
     _init();
   }
 
-  // Check if user is already logged in on app start
   void _init() {
     _authService.authStateChanges.listen((firebaseUser) async {
       if (firebaseUser != null) {
-        // User is logged in — load their profile
         _currentUser = await _authService.getCurrentUserProfile();
         _state = AuthState.authenticated;
       } else {
@@ -45,7 +43,6 @@ class AuthProvider extends ChangeNotifier {
     try {
       _currentUser = await _authService.login(email: email, password: password);
 
-      // Cache user district locally for offline scan tagging
       LocalStorageService.saveString(
         AppConstants.userBox,
         'district',
@@ -92,7 +89,6 @@ class AuthProvider extends ChangeNotifier {
         district: district,
       );
 
-      // Cache locally
       LocalStorageService.saveString(
         AppConstants.userBox,
         'district',

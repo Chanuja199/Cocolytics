@@ -51,7 +51,7 @@ class TreatmentModel {
       chemicalTreatments: (map['chemicalTreatments'] as List? ?? [])
           .map(
             (e) => ChemicalTreatment.fromMap(
-              Map<String, dynamic>.from(e as Map), 
+              Map<String, dynamic>.from(e as Map), // ← this is the fix
             ),
           )
           .toList(),

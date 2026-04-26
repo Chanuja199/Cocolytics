@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "457582135703",
+    "project_id": "cocolytics-99fe5",
+    "storage_bucket": "cocolytics-99fe5.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:457582135703:android:b3f31265c15f6a3f779cd2",
+        "android_client_info": {
+          "package_name": "com.chanuja.cocolytics"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA7yjGcUcdp0ULMkFOG9s9GK5v-fnMaw0I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

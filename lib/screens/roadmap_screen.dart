@@ -50,15 +50,12 @@ class RoadmapScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Disease header card
             _buildDiseaseCard(plan),
             const SizedBox(height: 20),
 
-            // Progress card
             _buildProgressCard(plan),
             const SizedBox(height: 24),
 
-            // Full treatment detail banner
             Container(
               margin: const EdgeInsets.only(bottom: 20),
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
@@ -109,7 +106,6 @@ class RoadmapScreen extends StatelessWidget {
               ),
             ),
 
-            // Short-term steps
             if (plan.shortTermSteps.isNotEmpty) ...[
               _sectionHeader(
                 'Short-Term Steps',
@@ -130,7 +126,6 @@ class RoadmapScreen extends StatelessWidget {
               const SizedBox(height: 20),
             ],
 
-            // Chemical steps
             if (plan.chemicalSteps.isNotEmpty) ...[
               _sectionHeader(
                 'Chemical Treatment',
@@ -151,7 +146,6 @@ class RoadmapScreen extends StatelessWidget {
               const SizedBox(height: 20),
             ],
 
-            // Long-term steps
             if (plan.longTermSteps.isNotEmpty) ...[
               _sectionHeader('Long-Term Steps', Icons.eco, AppColors.primary),
               const SizedBox(height: 12),
@@ -168,7 +162,6 @@ class RoadmapScreen extends StatelessWidget {
               const SizedBox(height: 20),
             ],
 
-            // Completed banner
             if (plan.isCompleted)
               Container(
                 width: double.infinity,
@@ -253,7 +246,6 @@ class RoadmapScreen extends StatelessWidget {
       ),
       child: Row(
         children: [
-          // Leaf image
           ClipRRect(
             borderRadius: BorderRadius.circular(10),
             child: Image.network(
@@ -267,7 +259,7 @@ class RoadmapScreen extends StatelessWidget {
                 color: AppColors.background,
                 child: Padding(
                   padding: const EdgeInsets.all(12.0),
-                  child: Image.asset('assets/cocolytic-logo.png'),
+                  child: Image.asset('assets/icon.png'),
                 ),
               ),
             ),
@@ -416,7 +408,6 @@ class RoadmapScreen extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Timeline line + dot
             Column(
               children: [
                 Container(
@@ -446,7 +437,6 @@ class RoadmapScreen extends StatelessWidget {
               ],
             ),
             const SizedBox(width: 12),
-            // Step content
             Expanded(
               child: Container(
                 padding: const EdgeInsets.all(14),

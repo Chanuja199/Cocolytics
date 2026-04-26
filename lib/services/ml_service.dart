@@ -14,16 +14,23 @@ class MLService {
   Interpreter? _interpreter;
   final _uuid = const Uuid();
 
+  /// Model asset filename — matches the newly trained MobileNetV2 model.
   static const String _modelAsset = 'assets/coconut_disease_model.tflite';
 
+  /// Class labels in the EXACT order the Keras model was trained with.
+  /// Keras `flow_from_directory` sorts class folders alphabetically, so
+  /// the class indices are: {bud_rot: 0, healthy: 1, leaf_spot: 2,
+  /// lethal_yellowing: 3, root_wilt: 4}.
   static const List<String> _labels = [
-    'Bud Rot',
-    'Healthy',
-    'Leaf Spot',
-    'Lethal Yellowing',
-    'Root Wilt',
+    'Bud Rot',          // index 0 — bud_rot
+    'Healthy',          // index 1 — healthy
+    'Leaf Spot',        // index 2 — leaf_spot
+    'Lethal Yellowing', // index 3 — lethal_yellowing
+    'Root Wilt',        // index 4 — root_wilt
   ];
 
+  /// Maps the human-readable disease name to the snake_case diseaseId
+  /// used by TreatmentService.
   static const Map<String, String> _diseaseIdMap = {
     'Bud Rot': 'bud_rot',
     'Healthy': 'healthy',
@@ -32,9 +39,14 @@ class MLService {
     'Root Wilt': 'root_wilt',
   };
 
+  /// Input image dimensions expected by the MobileNetV2 model.
   static const int _inputSize = 224;
-  static const double _minGreenRatio = 0.15;
 
+  /// Minimum fraction of pixels that must look "plant-like" (green/yellow-green/brown)
+  /// for us to trust the image is actually a leaf. Lowered to 0.05 for severe diseases.
+  static const double _minGreenRatio = 0.05;
+
+  /// Gemini models to try for vision verification (in order of preference).
   static const List<String> _geminiModels = [
     'gemini-2.5-flash',
     'gemini-2.0-flash',
@@ -43,11 +55,13 @@ class MLService {
   Future<void> loadModel() async {
     try {
       _interpreter = await Interpreter.fromAsset(_modelAsset);
+      debugPrint('ML model loaded successfully from $_modelAsset');
     } catch (e) {
       debugPrint('Failed to load model: $e');
     }
   }
 
+  /// Classifies the given image using TFLite, applying a color pre-filter and optional Gemini validation.
   Future<ScanModel> classifyOffline({
     required String imagePath,
     required String userId,
@@ -108,7 +122,6 @@ class MLService {
     }
 
     final predictions = List<double>.from(output[0]);
-
     int maxIndex = 0;
     double maxConfidence = predictions[0];
     for (int i = 1; i < predictions.length; i++) {
@@ -143,11 +156,18 @@ class MLService {
     );
   }
 
+  /// Returns the snake_case disease ID for treatment lookups.
   static String getDiseaseId(String diseaseName) {
     return _diseaseIdMap[diseaseName] ??
         diseaseName.toLowerCase().replaceAll(RegExp(r'\s+'), '_');
   }
 
+  /// Checks whether the image contains enough green/yellow-green pixels
+  /// to plausibly be a photo of a plant leaf.
+  ///
+  /// Works by converting each pixel to HSV and checking if its hue falls
+  /// in the "plant" range (roughly 25°–160°, covering yellow-green through
+  /// green) with minimum saturation and value to exclude greys/blacks.
   bool _passesColorFilter(img.Image image) {
     int plantPixels = 0;
     int totalPixels = 0;
@@ -168,6 +188,7 @@ class MLService {
         final delta = cMax - cMin;
 
         final v = cMax;
+
         final s = cMax == 0 ? 0.0 : delta / cMax;
 
         double h = 0;
@@ -184,7 +205,7 @@ class MLService {
 
         totalPixels++;
 
-        if (h >= 15 && h <= 165 && s >= 0.10 && v >= 0.08) {
+        if (h >= 0 && h <= 170 && s >= 0.05 && v >= 0.05) {
           plantPixels++;
         }
       }
@@ -193,12 +214,19 @@ class MLService {
     if (totalPixels == 0) return false;
 
     final ratio = plantPixels / totalPixels;
+    debugPrint('Color filter: $plantPixels/$totalPixels plant pixels '
+        '(${(ratio * 100).toStringAsFixed(1)}%), threshold=${(_minGreenRatio * 100).toStringAsFixed(0)}%');
+
     return ratio >= _minGreenRatio;
   }
 
+    /// Sends the image to Gemini and asks whether it contains a coconut leaf.
+  /// Returns `true` if Gemini confirms, `false` if it rejects.
+  /// Falls back to `true` (permissive) if the API call fails, so as not
+  /// to block the user when the network is flaky.
   Future<bool> _verifyWithGemini(Uint8List imageBytes) async {
     final apiKey = Secrets.geminiApiKey;
-    if (apiKey.trim().isEmpty) return true;
+    if (apiKey.trim().isEmpty) return true; // No key → skip verification
 
     final base64Image = base64Encode(imageBytes);
 
@@ -224,7 +252,7 @@ class MLService {
                       },
                       {
                         'text':
-                            'Does this image contain a coconut palm leaf or frond? '
+                            'Does this image show any part of a plant, leaf, frond, trunk, or agricultural disease/damage? '
                             'Reply with ONLY "YES" or "NO". Nothing else.',
                       },
                     ],
@@ -249,7 +277,8 @@ class MLService {
           if (parts.isEmpty) return true;
 
           final answer = (parts.first['text'] ?? '').toString().trim().toUpperCase();
-          
+          debugPrint('Gemini leaf verification ($model): "$answer"');
+
           if (answer.contains('NO')) return false;
           if (answer.contains('YES')) return true;
 
@@ -257,13 +286,18 @@ class MLService {
         }
 
         if (response.statusCode == 404) continue;
+
+        debugPrint('Gemini verification failed ($model): ${response.statusCode}');
         return true;
       } catch (e) {
+        debugPrint('Gemini verification exception ($model): $e');
         return true;
       }
     }
+
     return true;
   }
+
 
   Map<String, dynamic> _getGuidance(String diseaseName) {
     switch (diseaseName) {

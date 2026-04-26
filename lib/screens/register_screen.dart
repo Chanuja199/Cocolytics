@@ -35,7 +35,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
     super.dispose();
   }
 
-  // ── BACKEND — DO NOT TOUCH ──
   Future<void> _register() async {
     if (!_formKey.currentState!.validate()) return;
 
@@ -188,7 +187,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
       backgroundColor: const Color(0xFFF5FCED), // bg-surface
       body: Stack(
         children: [
-          // Decorative Background Overlay (Blobs)
           Positioned(
             top: -100,
             right: -100,
@@ -226,7 +224,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
             ),
           ),
 
-          // Main Content
           SafeArea(
             child: Center(
               child: ConstrainedBox(
@@ -239,7 +236,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      // Header Section
                       Container(
                         width: 96,
                         height: 96,
@@ -249,7 +245,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ),
                         clipBehavior: Clip.antiAlias,
                         child: Image.asset(
-                          'assets/icon.jpeg',
+                          'assets/icon.png',
                           fit: BoxFit.contain,
                         ),
                       ),
@@ -278,7 +274,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
                       const SizedBox(height: 32),
 
-                      // Form Card
                       Container(
                         padding: const EdgeInsets.symmetric(
                           horizontal: 24,
@@ -357,7 +352,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     : null,
                               ),
 
-                              // Location Group (City & District)
                               Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -450,7 +444,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
                               const SizedBox(height: 8),
 
-                              // Submit Button
                               Container(
                                 width: double.infinity,
                                 height: 48, // min-h-[48px]
@@ -514,7 +507,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
                       const SizedBox(height: 32),
 
-                      // Navigation Link
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [

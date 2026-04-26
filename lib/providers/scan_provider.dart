@@ -21,6 +21,7 @@ class ScanProvider extends ChangeNotifier {
   List<ScanModel> get scanHistory => _scanHistory;
   String get errorMessage => _errorMessage;
 
+  /// Processes a leaf image, saves results locally, and performs a background sync.
   Future<void> scanLeaf({
     required String imagePath,
     required String userId,
@@ -44,7 +45,6 @@ class ScanProvider extends ChangeNotifier {
       );
 
       _currentScan = scan;
-
       await _dbHelper.insertScan(scan);
 
       _scanHistory.insert(0, scan);
@@ -64,6 +64,7 @@ class ScanProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Silently syncs local scan data to Firestore without blocking the UI.
   void _syncToFirestore(ScanModel scan, String district) {
     Future(() async {
       try {
@@ -80,27 +81,31 @@ class ScanProvider extends ChangeNotifier {
 
         debugPrint('Firestore sync complete for scan ${scan.id}');
       } catch (e) {
-        debugPrint('Firestore sync failed: $e');
+        debugPrint('Firestore sync failed (will retry later): $e');
       }
     });
   }
 
+  /// Loads the user's scan history from the local SQLite database.
   Future<void> loadScanHistory(String userId) async {
     _scanHistory = await _dbHelper.getScans(userId);
     notifyListeners();
   }
 
+  /// Deletes a scan record from the local SQLite database.
   Future<void> deleteScan(String id, String userId) async {
     await _dbHelper.deleteScan(id);
     await loadScanHistory(userId);
   }
 
+  /// Clears the current scan state.
   void clearCurrentScan() {
     _currentScan = null;
     _state = ScanState.idle;
     notifyListeners();
   }
 
+  /// Sets a specific scan as the currently active scan.
   void setCurrentScan(ScanModel scan) {
     _currentScan = scan;
     notifyListeners();

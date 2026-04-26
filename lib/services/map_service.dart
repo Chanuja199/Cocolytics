@@ -27,7 +27,6 @@ class MapService {
         .toList();
   }
 
-  // Called after every successful scan to update district stats
   Future<void> updateDistrictCount({
     required String district,
     required String diseaseName,

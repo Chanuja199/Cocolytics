@@ -162,7 +162,7 @@ class _LoginScreenState extends State<LoginScreen> {
               children: [
                 ClipOval(
                   child: Image.asset(
-                    'assets/icon.jpeg',
+                    'assets/icon.png',
                     width: 60,
                     height: 60,
                     fit: BoxFit.cover,
@@ -214,7 +214,6 @@ class _LoginScreenState extends State<LoginScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                // Header
                 if (!isDesktop)
                   Padding(
                     padding: const EdgeInsets.only(bottom: 24),
@@ -223,7 +222,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       children: [
                         ClipOval(
                           child: Image.asset(
-                            'assets/icon.jpeg',
+                            'assets/icon.png',
                             width: 36,
                             height: 36,
                             fit: BoxFit.cover,
@@ -282,7 +281,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
                 const SizedBox(height: 24),
 
-                // Email Label
                 Padding(
                   padding: const EdgeInsets.only(left: 8, bottom: 8),
                   child: Text.rich(
@@ -307,7 +305,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                 ),
-                // Email field
                 TextFormField(
                   controller: _emailController,
                   keyboardType: TextInputType.emailAddress,
@@ -332,7 +329,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
                 const SizedBox(height: 24),
 
-                // Password Label & Forgot
                 Padding(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 8,
@@ -380,7 +376,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     ],
                   ),
                 ),
-                // Password field
                 TextFormField(
                   controller: _passwordController,
                   obscureText: _obscurePassword,
@@ -419,7 +414,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
                 const SizedBox(height: 24),
 
-                // Submit Button
                 Container(
                   width: double.infinity,
                   height: 56,
@@ -486,12 +480,10 @@ class _LoginScreenState extends State<LoginScreen> {
 
                 const SizedBox(height: 24),
 
-                // Divider
                 const Divider(color: Color(0x26BECABB)), // outline-variant/15
 
                 const SizedBox(height: 24),
 
-                // Sign Up Link
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [

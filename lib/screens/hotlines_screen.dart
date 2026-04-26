@@ -6,7 +6,7 @@ import '../models/support_model.dart';
 class HotlinesScreen extends StatelessWidget {
   const HotlinesScreen({super.key});
 
-  // Function to launch WhatsApp with a pre-filled message
+  /// Launches WhatsApp with a pre-filled assistance message.
   Future<void> _openWhatsApp(String number) async {
     final message = Uri.encodeComponent(
       'Hello! I need help with my coconut crop.',
@@ -18,7 +18,7 @@ class HotlinesScreen extends StatelessWidget {
     }
   }
 
-  // Function to trigger a phone call
+  /// Triggers a native phone call to the specified number.
   Future<void> _callNumber(String number) async {
     final cleanNumber = number.replaceAll(' ', '').replaceAll('+', '');
     final uri = Uri.parse('tel:$cleanNumber');
@@ -54,14 +54,12 @@ class HotlinesScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // ── MAIN ACTION SECTION ──
             const Text(
               'Immediate Assistance',
               style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16),
 
-            // Primary Hotline Card (Designed like the search/cards in Support Hub)
             GestureDetector(
               onTap: () => _callNumber('1920'),
               child: Container(
@@ -132,8 +130,6 @@ class HotlinesScreen extends StatelessWidget {
             ),
             const SizedBox(height: 12),
 
-            // ── CONTACT LIST ──
-            // Using .map to create cards similar to the Support options list
             ...contacts.map(
               (contact) => Container(
                 margin: const EdgeInsets.only(bottom: 12),
@@ -141,7 +137,6 @@ class HotlinesScreen extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(12),
-                  // Added subtle shadow to match Support screen style
                   boxShadow: [
                     BoxShadow(
                       color: Colors.black.withOpacity(0.03),
@@ -163,7 +158,6 @@ class HotlinesScreen extends StatelessWidget {
                     ),
                     const Divider(height: 20, thickness: 0.5),
 
-                    // Phone Numbers
                     ...contact.phones.map(
                       (phone) => _buildContactAction(
                         icon: Icons.phone_outlined,
@@ -173,7 +167,6 @@ class HotlinesScreen extends StatelessWidget {
                       ),
                     ),
 
-                    // WhatsApp
                     if (contact.whatsappNumber != null)
                       _buildContactAction(
                         icon: Icons.chat_outlined,
@@ -182,7 +175,6 @@ class HotlinesScreen extends StatelessWidget {
                         color: const Color(0xFF25D366),
                       ),
 
-                    // Email
                     ...contact.emails.map(
                       (email) => _buildContactAction(
                         icon: Icons.email_outlined,
@@ -192,7 +184,6 @@ class HotlinesScreen extends StatelessWidget {
                       ),
                     ),
 
-                    // Website
                     if (contact.websiteUrl != null)
                       _buildContactAction(
                         icon: Icons.language,
@@ -218,7 +209,6 @@ class HotlinesScreen extends StatelessWidget {
     );
   }
 
-  // Helper widget to keep the individual contact items clean and consistent
   Widget _buildContactAction({
     required IconData icon,
     required String label,

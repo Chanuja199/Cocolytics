@@ -115,7 +115,6 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     );
   }
 
-  // ── Form view ────────────────────────────────────────────────────────────
   Widget _buildFormView() {
     return Form(
       key: _formKey,
@@ -124,7 +123,6 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
         children: [
           const SizedBox(height: 16),
 
-          // Icon
           Container(
             width: 88,
             height: 88,
@@ -167,7 +165,6 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
 
           const SizedBox(height: 40),
 
-          // Email field
           Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(18),
@@ -206,7 +203,6 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
 
           const SizedBox(height: 30),
 
-          // Send button
           Container(
             width: double.infinity,
             decoration: BoxDecoration(
@@ -293,14 +289,12 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     );
   }
 
-  // ── Success view (shown after email is sent) ─────────────────────────────
   Widget _buildSuccessView() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         const SizedBox(height: 16),
 
-        // Animated check circle
         Container(
           width: 100,
           height: 100,
@@ -366,7 +360,6 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
 
         const SizedBox(height: 48),
 
-        // Back to login button
         Container(
           width: double.infinity,
           decoration: BoxDecoration(
@@ -415,7 +408,6 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
 
         const SizedBox(height: 24),
 
-        // Resend option
         GestureDetector(
           onTap: () => setState(() => _emailSent = false),
           child: Text(

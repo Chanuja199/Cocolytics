@@ -27,12 +27,10 @@ class MapProvider extends ChangeNotifier {
 
     try {
       if (isOnline) {
-        // Fetch fresh data from Firebase
         _districts = await _mapService.getDistrictData();
         _recentAlerts = await _mapService.getRecentAlerts();
         _lastFetched = DateTime.now();
 
-        // Cache it
         for (final d in _districts) {
           LocalStorageService.save(
             AppConstants.districtBox,
@@ -41,7 +39,6 @@ class MapProvider extends ChangeNotifier {
           );
         }
       } else {
-        // Load from cache
         _loadFromCache();
       }
 

@@ -17,14 +17,12 @@ class TreatmentScreen extends StatefulWidget {
 }
 
 class _TreatmentScreenState extends State<TreatmentScreen> {
-  // [NEW] This handles loading the treatment if the user comes from the Roadmap
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final planProvider = context.read<PlanProvider>();
 
-      // If no treatment loaded (e.g., came from Roadmap via 'View full plan')
       if (planProvider.currentTreatment == null) {
         final activePlan = context.read<ActivePlanProvider>().activePlan;
         if (activePlan != null && activePlan.diseaseId.isNotEmpty) {
@@ -72,11 +70,9 @@ class _TreatmentScreenState extends State<TreatmentScreen> {
     );
   }
 
-  // --- REPLACED _buildContent METHOD ---
   Widget _buildContent(BuildContext context, PlanProvider plan) {
     final treatment = plan.currentTreatment!;
 
-    // 3. INITIALIZE PROVIDERS: Grab the instances needed for saving the plan
     final scanProvider = context.read<ScanProvider>();
     final activePlanProvider = context.read<ActivePlanProvider>();
     final authProvider = context.read<AuthProvider>();
@@ -88,8 +84,6 @@ class _TreatmentScreenState extends State<TreatmentScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // 4. SAVE BUTTON LOGIC
-          // This block checks if a scan exists and if it's NOT already the active plan
           if (currentScan != null &&
               activePlanProvider.activePlan?.diseaseName !=
                   currentScan.diseaseName)
@@ -100,7 +94,6 @@ class _TreatmentScreenState extends State<TreatmentScreen> {
                 onPressed: () async {
                   final userId = authProvider.currentUser?.id ?? 'temp_user_id';
 
-                  // Logic to handle existing plans (Replace vs Keep)
                   if (activePlanProvider.hasPlan) {
                     final confirm = await showDialog<bool>(
                       context: context,
@@ -131,7 +124,6 @@ class _TreatmentScreenState extends State<TreatmentScreen> {
                     await activePlanProvider.deletePlan(userId);
                   }
 
-                  // Actually create the plan in the database/provider
                   await activePlanProvider.createPlan(
                     userId: userId,
                     scan: currentScan,
@@ -166,8 +158,6 @@ class _TreatmentScreenState extends State<TreatmentScreen> {
               ),
             ),
 
-          // 5. ROADMAP BUTTON
-          // Only shows if the user has ALREADY saved this specific disease plan
           if (activePlanProvider.activePlan?.diseaseName ==
               currentScan?.diseaseName)
             Container(
@@ -193,7 +183,6 @@ class _TreatmentScreenState extends State<TreatmentScreen> {
               ),
             ),
 
-          // 6. ORIGINAL CONTENT (Short term, Chemical, Long term)
           _sectionCard(
             icon: '🌿',
             iconColor: AppColors.success,

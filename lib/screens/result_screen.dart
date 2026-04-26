@@ -1,13 +1,15 @@
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import '../providers/scan_provider.dart';
-import '../providers/plan_provider.dart';
-import '../providers/auth_provider.dart';
-import '../utils/app_colors.dart';
-import 'package:go_router/go_router.dart';
-import '../providers/localization_provider.dart';
-import '../services/ml_service.dart';
 import 'dart:io';
+
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
+
+import '../providers/auth_provider.dart';
+import '../providers/localization_provider.dart';
+import '../providers/plan_provider.dart';
+import '../providers/scan_provider.dart';
+import '../services/ml_service.dart';
+import '../utils/app_colors.dart';
 
 class ResultScreen extends StatelessWidget {
   const ResultScreen({super.key});
@@ -18,9 +20,7 @@ class ResultScreen extends StatelessWidget {
     final currentUserId = context.watch<AuthProvider>().currentUser?.id;
     final loc = context.watch<LocalizationProvider>();
 
-    if (scan == null ||
-        currentUserId == null ||
-        scan.userId != currentUserId) {
+    if (scan == null || currentUserId == null || scan.userId != currentUserId) {
       return const Scaffold(body: Center(child: Text('No scan result found')));
     }
 
@@ -39,12 +39,12 @@ class ResultScreen extends StatelessWidget {
               width: 28,
               height: 28,
               decoration: BoxDecoration(
-                color: AppColors.primary,
+                color: const Color.fromARGB(255, 255, 255, 255),
                 borderRadius: BorderRadius.circular(6),
               ),
               child: Padding(
                 padding: const EdgeInsets.all(4.0),
-                child: Image.asset('assets/cocolytic-logo.png'),
+                child: Image.asset('assets/icon.png'),
               ),
             ),
             const SizedBox(width: 8),
@@ -63,7 +63,6 @@ class ResultScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Leaf image
             SizedBox(
               width: double.infinity,
               height: 240,
@@ -73,7 +72,11 @@ class ResultScreen extends StatelessWidget {
                       fit: BoxFit.cover,
                       errorBuilder: (_, _, _) => Container(
                         color: Colors.grey[200],
-                        child: const Icon(Icons.image, size: 60, color: Colors.grey),
+                        child: const Icon(
+                          Icons.image,
+                          size: 60,
+                          color: Colors.grey,
+                        ),
                       ),
                     )
                   : Image.file(
@@ -81,7 +84,11 @@ class ResultScreen extends StatelessWidget {
                       fit: BoxFit.cover,
                       errorBuilder: (_, _, _) => Container(
                         color: Colors.grey[200],
-                        child: const Icon(Icons.image, size: 60, color: Colors.grey),
+                        child: const Icon(
+                          Icons.image,
+                          size: 60,
+                          color: Colors.grey,
+                        ),
                       ),
                     ),
             ),
@@ -91,9 +98,10 @@ class ResultScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Disease name
                   Text(
-                    loc.translate(scan.diseaseName) != scan.diseaseName ? loc.translate(scan.diseaseName) : scan.diseaseName,
+                    loc.translate(scan.diseaseName) != scan.diseaseName
+                        ? loc.translate(scan.diseaseName)
+                        : scan.diseaseName,
                     style: const TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -119,7 +127,6 @@ class ResultScreen extends StatelessWidget {
 
                   const SizedBox(height: 16),
 
-                  // Plant Health Card — matches your Figma exactly
                   Container(
                     width: double.infinity,
                     padding: const EdgeInsets.all(16),
@@ -191,54 +198,55 @@ class ResultScreen extends StatelessWidget {
                         ),
                         const SizedBox(height: 14),
 
-                        // Treatments button — only show when a disease is detected
                         if (scan.diseaseName != 'Healthy')
-                        SizedBox(
-                          width: double.infinity,
-                          child: ElevatedButton(
-                            onPressed: () async {
-                              final diseaseId = MLService.getDiseaseId(scan.diseaseName);
+                          SizedBox(
+                            width: double.infinity,
+                            child: ElevatedButton(
+                              onPressed: () async {
+                                final diseaseId = MLService.getDiseaseId(
+                                  scan.diseaseName,
+                                );
 
-                              // Wait for treatment to load BEFORE navigating
-                              await context.read<PlanProvider>().loadTreatment(
-                                diseaseId,
-                              );
+                                await context
+                                    .read<PlanProvider>()
+                                    .loadTreatment(diseaseId);
 
-                              if (!context.mounted) return;
+                                if (!context.mounted) return;
 
-                              context.push('/treatment');
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: AppColors.primary,
-                              foregroundColor: Colors.white,
-                              padding: const EdgeInsets.symmetric(vertical: 14),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
+                                context.push('/treatment');
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: AppColors.primary,
+                                foregroundColor: Colors.white,
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 14,
+                                ),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    loc.translate('treatments'),
+                                    style: const TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 8),
+                                  const Icon(Icons.arrow_forward, size: 18),
+                                ],
                               ),
                             ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  loc.translate('treatments'),
-                                  style: const TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                const SizedBox(width: 8),
-                                const Icon(Icons.arrow_forward, size: 18),
-                              ],
-                            ),
                           ),
-                        ),
                       ],
                     ),
                   ),
 
                   const SizedBox(height: 24),
 
-                  // Common Symptoms
                   Text(
                     loc.translate('common_symptoms'),
                     style: const TextStyle(
@@ -288,7 +296,6 @@ class ResultScreen extends StatelessWidget {
 
                   const SizedBox(height: 24),
 
-                  // Confidence indicator
                   Row(
                     children: [
                       Text(

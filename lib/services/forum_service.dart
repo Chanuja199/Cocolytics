@@ -53,7 +53,6 @@ class ForumService {
     });
   }
 
-  // Generates an AI reply (free-tier: Gemini) and saves it.
   Future<ForumPostModel> generateAiReply({
     required String postId,
     required String content,
@@ -61,7 +60,6 @@ class ForumService {
     try {
       final aiReplyText = await _ai.draftForumReply(question: content);
 
-      // Save AI reply to Firestore
       final replyId = _uuid.v4();
       final aiReply = ForumReply(
         id: replyId,
@@ -76,11 +74,9 @@ class ForumService {
         'replies': FieldValue.arrayUnion([aiReply.toMap()]),
       });
 
-      // Return updated post
       final doc = await _db.collection('forum_posts').doc(postId).get();
       return ForumPostModel.fromMap(doc.data()!);
     } catch (e) {
-      // If AI fails, still return the post without AI reply
       final doc = await _db.collection('forum_posts').doc(postId).get();
       return ForumPostModel.fromMap(doc.data()!);
     }

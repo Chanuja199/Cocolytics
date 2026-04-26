@@ -16,7 +16,6 @@ class PlanProvider extends ChangeNotifier {
   String get errorMessage => _errorMessage;
 
   Future<void> loadTreatment(String diseaseId) async {
-    // Check cache first
     final cached = LocalStorageService.get(
       AppConstants.treatmentsBox,
       diseaseId,
@@ -34,7 +33,6 @@ class PlanProvider extends ChangeNotifier {
     try {
       _currentTreatment = await _treatmentService.getTreatment(diseaseId);
 
-      // Cache it
       if (_currentTreatment != null) {
         LocalStorageService.save(
           AppConstants.treatmentsBox,
